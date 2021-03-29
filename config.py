@@ -10,6 +10,7 @@ load_dotenv(override=True, verbose=True)
 # Credentials
 USER_EMAIL = os.getenv('USER_EMAIL')
 USER_PASSWORD = os.getenv('USER_PASSWORD')
+USER_WRONG_EMAIL = os.getenv('USER_WRONG_EMAIL')
 
 # Sites
 SITE = os.getenv('APP_URL')

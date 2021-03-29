@@ -8,7 +8,7 @@ import config
 
 
 @pytest.fixture()
-def setup(request):
+def browser(request):
     driver = webdriver.Chrome(ChromeDriverManager().install())
     driver.implicitly_wait(10)
     driver.maximize_window()

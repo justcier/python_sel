@@ -1,19 +1,52 @@
-from common.base_page import BasePage
+from time import sleep
+
+from selenium.webdriver.common.by import By
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 class MyAccountPage:
 
     def __init__(self, driver):
         self.driver = driver
-        self.register_email_input_css_selector = "input[type='email']"
-        self.register_password_input_css_selector = "input[id='reg_password']"
+        self.register_email_input_id = "reg_email"
+        self.register_password_input_id = "reg_password"
         self.register_button_css_selector = "button[name='register']"
+        self.log_out_href_in_my_account_xpath = "//a[text()='Logout']"
+        self.password_validation_msg_xpath = "//div[contains(@class, 'woocommerce-password-strength')]"
+        self.login_email_input_id = "username"
+        self.login_password_input_id = "password"
+        self.login_button_css_selector = "button[name='login']"
+        self.error_msg_xpath = "//ul[@class='woocommerce-error']/li"
 
-    def register_user(self, user_email, user_password):
-        email_input = self.driver.find_element_by_css_selector("input[type='email']")
-        password_input = self.driver.find_element_by_css_selector("input[id='reg_password']")
+    def fill_login_form(self, user_email, user_password):
+        email_input = self.driver.find_element(By.ID, self.login_email_input_id)
+        password_input = self.driver.find_element(By.ID, self.login_password_input_id)
         email_input.click()
         email_input.send_keys(user_email)
         password_input.click()
         password_input.send_keys(user_password)
-        self.driver.find_element_by_css_selector("button[name='register']").click()
+
+    def log_in_user(self, user_email, user_password):
+        self.fill_login_form(user_email, user_password)
+        self.driver.find_element(By.CSS_SELECTOR, self.login_button_css_selector).click()
+
+    def fill_register_form(self, user_email, user_password):
+        email_input = self.driver.find_element(By.ID, self.register_email_input_id)
+        password_input = self.driver.find_element(By.ID, self.register_password_input_id)
+        email_input.click()
+        email_input.send_keys(user_email)
+        password_input.click()
+        password_input.send_keys(user_password)
+
+    def register_user(self, user_email, user_password):
+        self.fill_register_form(user_email, user_password)
+        self.driver.find_element(By.CSS_SELECTOR, self.register_button_css_selector).click()
+
+    def is_logout_link_displayed(self):
+        return self.driver.find_element(By.XPATH, self.log_out_href_in_my_account_xpath).is_displayed()
+
+    def login_validation_msg(self, user_email, user_password):
+        self.fill_login_form(user_email, user_password)
+        self.driver.find_element(By.CSS_SELECTOR, self.login_button_css_selector).click()
+        return self.driver.find_element_by_xpath(self.error_msg_xpath).text

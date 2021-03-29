@@ -1,18 +1,20 @@
+from datetime import datetime
+
 import pytest
 import config
-from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
 
 from pages.home_page import HomePage
 from pages.my_account_page import MyAccountPage
 
 
-@pytest.mark.usefixtures("setup")
+@pytest.mark.usefixtures("browser")
 class TestCreateUser:
 
     def test_create_user(self):
         home_page = HomePage(self.driver)
-        new_account = MyAccountPage(self.driver)
+        account_page = MyAccountPage(self.driver)
+        generate_email = f"email{datetime.now().microsecond}@test.com"
+        generate_password = f"password{datetime.now().microsecond}"
         home_page.go_to_my_account_page()
-        new_account.register_user(config.USER_EMAIL, config.USER_PASSWORD)
-
+        account_page.register_user(generate_email, generate_password)
+        account_page.is_logout_link_displayed()
