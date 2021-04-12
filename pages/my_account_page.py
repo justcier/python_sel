@@ -67,10 +67,16 @@ class MyAccountPage:
         return self.driver.find_element(By.XPATH, self.log_out_href_in_my_account_xpath).is_displayed()
 
     @allure.step("Check validation message")
-    def login_validation_msg(self, user_email, user_password):
-        self.fill_login_form(user_email, user_password)
-        self.driver.find_element(By.CSS_SELECTOR, self.login_button_css_selector).click()
+    def validation_msg(self):
         validation_msg = self.driver.find_element_by_xpath(self.error_msg_xpath).text
-        self.logger.info(f"Check validation message: {validation_msg}")
+        self.logger.info(f"Visible validation message: {validation_msg}")
         allure.attach(self.driver.get_screenshot_as_png(), name="validation_msg", attachment_type=AttachmentType.PNG)
         return validation_msg
+
+    @allure.step("Check password validation message")
+    def password_validation_msg(self, password, user_email):
+        self.register_user(user_email, password)
+        pass_valid_msg = self.driver.find_element_by_xpath(self.password_validation_msg_xpath).text
+        self.logger.info(f"Visible password validation message: {pass_valid_msg} for password {password}")
+        allure.attach(self.driver.get_screenshot_as_png(), name="pass_valid_msg", attachment_type=AttachmentType.PNG)
+        return pass_valid_msg

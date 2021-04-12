@@ -5,3 +5,4 @@ pytest==6.2.2
 webdriver-manager==3.3.0
 python-dotenv==0.16.0
 allure_pytest==2.8.40
+assertpy==1.1
