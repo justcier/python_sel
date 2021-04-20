@@ -4,6 +4,7 @@ import pytest
 from assertpy import assert_that
 
 import config
+import data
 
 from pages.home_page import HomePage
 from pages.my_account_page import MyAccountPage
@@ -24,8 +25,7 @@ class TestLogin:
         home_page.go_to_my_account_page()
         account_page.log_in_user(config.USER_WRONG_EMAIL, config.USER_PASSWORD)
         email_validation_msg = account_page.validation_msg()
-        assert email_validation_msg == 'ERROR: Invalid email address. Lost your password?', \
-            "Something went wrong. Validation massage should appear:'ERROR: Invalid email address. Lost your password?'"
+        assert_that(email_validation_msg).is_equal_to(data.ERROR_INVALID_EMAIL_LOG)
 
     @allure.title("Login user with valid email")
     @allure.description(f"Test login to user with valid credentials-> email: {config.USER_EMAIL}, "

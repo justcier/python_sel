@@ -6,8 +6,6 @@ from webdriver_manager import driver
 from webdriver_manager.chrome import ChromeDriverManager
 import selenium
 import allure
-from common.base_page import BasePage
-from common.locators import Locator
 
 
 class HomePage:

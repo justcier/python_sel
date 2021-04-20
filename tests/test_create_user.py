@@ -4,6 +4,8 @@ from assertpy import assert_that
 import config
 import allure
 from datetime import datetime
+
+import data
 from pages.home_page import HomePage
 from pages.my_account_page import MyAccountPage
 
@@ -35,8 +37,7 @@ class TestCreateUser:
         home_page.go_to_my_account_page()
         account_page.register_user(config.USER_EMAIL, config.USER_PASSWORD)
         error_msg = account_page.validation_msg()
-        assert_that(error_msg).is_equal_to(
-            'Error: An account is already registered with your email address. Please log in.')
+        assert_that(error_msg).is_equal_to(data.ERROR_ALREADY_REGISTERED_ACC)
 
     @allure.title("Create user with invalid email")
     @allure.description(f"Test try to create user with invalid email: a@b.c")
@@ -48,12 +49,12 @@ class TestCreateUser:
         home_page.go_to_my_account_page()
         account_page.register_user("a@b.c", config.USER_PASSWORD)
         error_msg = account_page.validation_msg()
-        assert_that(error_msg).is_equal_to('Error: Please provide a valid email address.')
+        assert_that(error_msg).is_equal_to(data.ERROR_INVALID_EMAIL_REG)
 
     @allure.title("Test param create user validation")
-    @pytest.mark.parametrize("email, password, error", [(config.USER_EMAIL, config.USER_PASSWORD, 'Error: An account is already registered with your email address. Please log in.'),
-                                                        ('a@b.c', 'xyzQ!!1234', 'Error: Please provide a valid email address.'),
-                                                        ('temail@email.com', '', 'Error: Please enter an account password.')])
+    @pytest.mark.parametrize("email, password, error", [(config.USER_EMAIL, config.USER_PASSWORD, data.ERROR_ALREADY_REGISTERED_ACC),
+                                                        ('a@b.c', 'xyzQ!!1234', data.ERROR_INVALID_EMAIL_REG),
+                                                        ('temail@email.com', '', data.ERROR_MISSING_PASS)])
     def test_param_create_user_validation(self, email, password, error):
         home_page = HomePage(self.driver)
         account_page = MyAccountPage(self.driver)
