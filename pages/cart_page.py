@@ -11,25 +11,20 @@ import allure
 class CartPage:
     def __init__(self, driver):
         self.driver = driver
-        self.cart_href_xpath = "//a[text()='Cart']"
         self.empty_cart_msg_xpath = "//p[@class='cart-empty woocommerce-info']"
-        self.cart_icon_xpath = "//ul[@class='site-header-cart menu']"
+        self.checkout_button_xpath = "//a[@class='checkout-button button alt wc-forward']"
         self.logger = logging.getLogger(__name__)
 
-    @allure.step("Go to cart by tab")
-    def go_to_cart(self):
-        self.logger.info("Go to cart by tab")
-        self.driver.find_element(By.XPATH, self.cart_href_xpath).click()
-        allure.attach(self.driver.get_screenshot_as_png(), name="cart", attachment_type=AttachmentType.PNG)
-
-    @allure.step("Check empty cart validation message")
-    def empty_cart_validation_msg(self):
-        empty_cart_validation_msg = self.driver.find_element_by_xpath(self.empty_cart_msg_xpath).text
-        self.logger.info(f"Visible validation message: {empty_cart_validation_msg}")
+    @allure.step("Check empty cart message")
+    def empty_cart_msg(self):
+        empty_cart_msg = self.driver.find_element_by_xpath(self.empty_cart_msg_xpath).text
+        self.logger.info(f"Visible validation message: {empty_cart_msg}")
         allure.attach(self.driver.get_screenshot_as_png(), name="empty_cart_msg", attachment_type=AttachmentType.PNG)
-        return empty_cart_validation_msg
+        return empty_cart_msg
 
-    def go_to_cart_by_icon(self):
-        self.logger.info("Go to cart by icon")
-        self.driver.find_element(By.XPATH, self.cart_icon_xpath).click()
-        allure.attach(self.driver.get_screenshot_as_png(), name="cart", attachment_type=AttachmentType.PNG)
+    @allure.step("Text on checkout button")
+    def text_on_checkout_button(self):
+        checkout_button_text = self.driver.find_element(By.XPATH, self.checkout_button_xpath).text
+        self.logger.info(f"User is in cart and see checkout button with text {checkout_button_text}")
+        allure.attach(self.driver.get_screenshot_as_png(), name="checkout_button", attachment_type=AttachmentType.PNG)
+        return checkout_button_text
