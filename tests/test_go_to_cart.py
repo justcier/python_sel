@@ -40,3 +40,16 @@ class TestGoToCart:
         home_page.click_view_cart_button("Beanie")
         text_on_checkout_button = cart_page.text_on_checkout_button()
         assert_that(text_on_checkout_button).is_equal_to("Proceed to checkout")
+
+    @allure.title("Go to cart")
+    @allure.description("Test for check soft assertions run with '--soft-asserts'")
+    def test_go_to_cart_by_add_product_soft_assertions(self):
+        cart_page = CartPage(self.driver)
+        home_page = HomePage(self.driver)
+        test_value = -1
+        home_page.click_add_to_cart_button("Beanie")
+        assert test_value == 1
+        home_page.click_view_cart_button("Beanie")
+        assert test_value == 2
+        text_on_checkout_button = cart_page.text_on_checkout_button()
+        assert text_on_checkout_button == "Proceed to checkoutFail"
