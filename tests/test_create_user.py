@@ -56,9 +56,11 @@ class TestCreateUser:
         assert_that(error_msg).is_equal_to(data.ERROR_INVALID_EMAIL_REG)
 
     @allure.title("Test param create user validation")
-    @pytest.mark.parametrize("email, password, error", [(config.USER_EMAIL, config.USER_PASSWORD, data.ERROR_ALREADY_REGISTERED_ACC),
-                                                        ('a@b.c', 'xyzQ!!1234', data.ERROR_INVALID_EMAIL_REG),
-                                                        ('temail@email.com', '', data.ERROR_MISSING_PASS)])
+    @pytest.mark.parametrize("email, password, error", [
+        (config.USER_EMAIL, config.USER_PASSWORD, data.ERROR_ALREADY_REGISTERED_ACC),
+        ('a@b.c', 'xyzQ!!1234', data.ERROR_INVALID_EMAIL_REG),
+        ('temail@email.com', '', data.ERROR_MISSING_PASS)
+    ])
     def test_param_create_user_validation(self, email, password, error):
         home_page = HomePage(self.driver)
         account_page = MyAccountPage(self.driver)

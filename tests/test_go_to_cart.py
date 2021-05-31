@@ -43,6 +43,8 @@ class TestGoToCart:
 
     @allure.title("Go to cart")
     @allure.description("Test for check soft assertions run with '--soft-asserts'")
+    # @pytest.mark.skip
+    @pytest.mark.slow_assertions
     def test_go_to_cart_by_add_product_soft_assertions(self):
         cart_page = CartPage(self.driver)
         home_page = HomePage(self.driver)
